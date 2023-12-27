@@ -158,6 +158,10 @@ return [
     'providers' => ServiceProvider::defaultProviders()->merge([
         \Framework\Providers\AppServiceProvider::class,
         \Framework\Providers\RouteServiceProvider::class,
+		\Application\Common\CommonProvider::class,
+		\Application\Home\HomeProvider::class,
+		\Application\Setup\SetupProvider::class,
+		\Application\Todos\TodosProvider::class,
     ])->toArray(),
 
     /*

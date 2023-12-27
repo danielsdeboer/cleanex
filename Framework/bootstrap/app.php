@@ -14,11 +14,24 @@
 use Framework\ConsoleKernel;
 use Framework\ExceptionHandler;
 use Framework\HttpKernel;
+use Illuminate\Foundation\Application;
 
-$app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
-);
+// Because we're using a non-standard directory structure, we need to add a
+// macro to set the application namespace, otherwise commands like route:list
+// will fail when trying to detect the namespace.
+Application::macro('setNamespace', function (string $namespace) {
+	/** @var \Illuminate\Foundation\Application $this */
+	$this->namespace = $namespace;
+});
 
+$app = new Application($_ENV['APP_BASE_PATH'] ?? dirname(__DIR__));
+
+// Because we're using a non-standard directory structure, we need to tell the
+// framework where to find the environment file(s).
+$app->useEnvironmentPath(__DIR__ . '/../../');
+
+/** @noinspection PhpUndefinedMethodInspection */
+$app->setNamespace('Application');
 
 /*
 |--------------------------------------------------------------------------
