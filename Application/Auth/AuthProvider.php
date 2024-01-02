@@ -4,7 +4,6 @@ namespace Application\Auth;
 
 use Application\Auth\Core\Interfaces\AuthDataRepoInterface;
 use Application\Auth\Core\Interfaces\UserRepoInterface;
-use Application\Auth\Core\Services\AuthenticationService;
 use Application\Auth\Core\Services\UserUpdateService;
 use Application\Auth\IO\AuthDataRepo;
 use Application\Auth\IO\UserRepo;
@@ -26,10 +25,7 @@ class AuthProvider extends ServiceProvider
 		$this->app->bind(AuthDataRepoInterface::class, AuthDataRepo::class);
 	}
 
-	public function boot(
-		AuthenticationService $authenticationService,
-		ViewFactory $viewFactory,
-	): void
+	public function boot(ViewFactory $viewFactory): void
 	{
 		$this->loadViewsFrom(__DIR__ . '/UI/Views', 'auth');
 
@@ -38,7 +34,6 @@ class AuthProvider extends ServiceProvider
 		// Fortify Features //
 
 		Fortify::createUsersUsing(UserUpdateService::class);
-		Fortify::authenticateUsing($authenticationService);
 
 		// Fortify Views //
 

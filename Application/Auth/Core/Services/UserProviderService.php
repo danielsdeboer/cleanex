@@ -5,14 +5,17 @@ namespace Application\Auth\Core\Services;
 use Application\Auth\Core\Entities\User;
 use Application\Auth\Core\Interfaces\UserRepoInterface;
 use Application\Auth\Core\Values\RememberToken;
+use Application\Auth\Core\Values\UserEmail;
+use Application\Auth\Core\Values\UserPassword;
 use Application\Common\Core\Exceptions\NotFoundInRepoException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 
-class UserEntityProvider implements UserProvider
+class UserProviderService implements UserProvider
 {
 	public function __construct(
 		private readonly UserRepoInterface $repo,
@@ -61,24 +64,42 @@ class UserEntityProvider implements UserProvider
 		$this->repo->updateRememberToken($user);
 	}
 
+	/**
+	 * @throws \Application\Common\Core\Exceptions\InvalidValueException
+	 */
 	public function retrieveByCredentials(array $credentials): User|null
 	{
-		dd($credentials);
+		$subset = Arr::only($credentials, ['email', 'password']);
+
+		if (count($subset) !== 2) {
+			return null;
+		}
+
+		try {
+			$user = $this->repo->findByEmail(new UserEmail($subset['email']));
+		} catch (NotFoundInRepoException) {
+			return null;
+		}
+
+		if (!$this->validateCredentials($user, $subset)) {
+			return null;
+		}
+
+		return $user;
 	}
 
 	/**
 	 * @param array{password: string} $credentials
+	 * @throws \Application\Common\Core\Exceptions\InvalidValueException
 	 */
 	public function validateCredentials(
 		Authenticatable $user,
 		array $credentials
 	): bool
 	{
-		$user = $this->assertIsUser($user);
-
-		return $this->hasher->check(
-			$credentials['password'],
-			$user->getAuthPassword(),
+		return $this->assertIsUser($user)->hasMatchingPassword(
+			$this->hasher,
+			new UserPassword($credentials['password']),
 		);
 	}
 
