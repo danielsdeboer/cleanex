@@ -14,15 +14,14 @@ class TodosProvider extends ServiceProvider
 		$this->app->bind(BucketRepoInterface::class, BucketRepo::class);
 	}
 
-	/**
-	 * @throws \Illuminate\Contracts\Container\BindingResolutionException
-	 */
-	public function boot(): void
+	public function boot(Router $router): void
     {
-		$this->app->make(Router::class)->middleware('web')->group(function () {
-			$this->loadRoutesFrom(__DIR__ . '/UI/Routes/routes.php');
-		});
+		$router
+			->middleware(['web', 'auth'])
+			->group(function () {
+				$this->loadRoutesFrom(__DIR__ . '/UI/Routes/routes.php');
+			});
 
-        $this->loadViewsFrom(__DIR__ . '/UI/Views', 'buckets');
+        $this->loadViewsFrom(__DIR__ . '/UI/Views', 'todos');
     }
 }

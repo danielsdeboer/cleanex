@@ -47,10 +47,10 @@ class BucketRepoTest extends DatabaseTestCase
 	    $record = $this->bucketSeed->insert()[0];
 
 		$bucket = $this->bucketRepo->findById(
-			Uuid::fromString($record['uuid']),
+			Uuid::fromString($record['id']),
 		);
 
-		$this->assertTrue($bucket->getId()->equals($record['uuid']));
+		$this->assertTrue($bucket->getId()->equals($record['id']));
 		$this->assertTrue($bucket->getName()->equals($record['name']));
 	}
 

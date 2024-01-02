@@ -11,7 +11,7 @@
 		@forelse($buckets as $bucket)
 			<li>
 				<strong>{{ $bucket->getName() }}</strong>
-				<a href="{{ route('buckets::show', $bucket->getId()) }}">
+				<a href="{{ route('todos::buckets.show', $bucket->getId()) }}">
 					({{ $bucket->getId() }})
 				</a>
 			</li>

@@ -27,6 +27,7 @@ class BucketSeed
 		return $this;
 	}
 
+	/** @return list<array<string, mixed>> */
 	public function insert(): array
 	{
 		$inserted = [];
@@ -44,10 +45,11 @@ class BucketSeed
 		return $inserted;
 	}
 
+	/** @return array<string, mixed> */
 	private function definition(): array
 	{
 		return [
-			'uuid' => Str::orderedUuid(),
+			'id' => Str::orderedUuid(),
 			'name' => $this->faker->sentence(3),
 			'created_at' => Carbon::now(),
 			'updated_at' => Carbon::now(),

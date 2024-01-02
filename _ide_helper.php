@@ -14521,19 +14521,6 @@
                         /** @var \Illuminate\Routing\Router $instance */
                         return $instance->macroCall($method, $parameters);
         }
-                    /**
-         * 
-         *
-         * @see \Framework\Providers\RouteServiceProvider::boot()
-         * @param string $uri
-         * @param string $handler
-         * @param string $name
-         * @static 
-         */ 
-        public static function getHandler($uri, $handler, $name)
-        {
-                        return \Illuminate\Routing\Router::getHandler($uri, $handler, $name);
-        }
          
     }
             /**
@@ -18662,31 +18649,6 @@
         public static function hasValidSignatureWhileIgnoring($ignoreQuery = [], $absolute = true)
         {
                         return \Illuminate\Http\Request::hasValidSignatureWhileIgnoring($ignoreQuery, $absolute);
-        }
-         
-    }
-     
-}
-
-    namespace Illuminate\Routing { 
-            /**
-     * 
-     *
-     * @mixin \Illuminate\Routing\RouteRegistrar
-     */ 
-        class Router {
-                    /**
-         * 
-         *
-         * @see \Framework\Providers\RouteServiceProvider::boot()
-         * @param string $uri
-         * @param string $handler
-         * @param string $name
-         * @static 
-         */ 
-        public static function getHandler($uri, $handler, $name)
-        {
-                        return \Illuminate\Routing\Router::getHandler($uri, $handler, $name);
         }
          
     }

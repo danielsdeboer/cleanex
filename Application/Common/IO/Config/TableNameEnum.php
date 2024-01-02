@@ -4,5 +4,7 @@ namespace Application\Common\IO\Config;
 
 enum TableNameEnum: string
 {
-	case Buckets = 'todolists';
+	case Users = 'users';
+	case Buckets = 'buckets';
+	case Todos = 'todos';
 }

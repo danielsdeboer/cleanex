@@ -2,18 +2,17 @@
 
 namespace Application\Todos\UI\Handlers;
 
+use Application\Common\UI\Routing\RedirectFactory;
 use Application\Todos\Core\Entities\Bucket;
 use Application\Todos\Core\Interfaces\BucketRepoInterface;
-use Application\Todos\Core\Values\BucketName;
+use Application\Todos\UI\RouteEnum;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Str;
 
 class BucketStoreHandler
 {
 	public function __construct(
-		private readonly Redirector $redirector,
+		private readonly RedirectFactory $redirectFactory,
 		private readonly BucketRepoInterface $repo,
 	)
 	{
@@ -28,13 +27,10 @@ class BucketStoreHandler
 			'name' => ['required', 'string', 'max:255'],
 		]);
 
-		$this->repo->insert(
-			new Bucket(
-				id: Str::uuid(),
-				name: new BucketName($validated['name']),
-			),
-		);
+		$bucket = $this->repo->insert(Bucket::fromValidated($validated));
 
-		return $this->redirector->route('buckets::index');
+		return $this->redirectFactory->make(RouteEnum::BucketShow, [
+			'bucketId' => $bucket->getId(),
+		]);
 	}
 }

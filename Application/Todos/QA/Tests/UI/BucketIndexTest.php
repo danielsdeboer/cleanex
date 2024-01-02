@@ -6,6 +6,7 @@ use Application\Common\QA\Cases\WebTestCase;
 use Application\Todos\Core\Interfaces\BucketRepoInterface;
 use Application\Todos\QA\Support\Stubs\BucketRepoStub;
 use Application\Todos\UI\Handlers\BucketIndexHandler;
+use Application\Todos\UI\RouteEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -29,12 +30,12 @@ class BucketIndexTest extends WebTestCase
 	{
 		$bucketList = $this->repo->all();
 
-	    $response = $this->callNamedRoute('buckets::index')->assertOk();
+	    $response = $this->callNamedRoute(RouteEnum::BucketIndex)->assertOk();
 
-		/** @var \Application\Todos\Core\Entities\Bucket $todoList */
+		/** @var \Application\Todos\Core\Entities\Bucket $bucket */
 		foreach ($bucketList as $bucket) {
 			$response
-				// ->assertSee($bucket->getName())
+				->assertSee($bucket->getName())
 				->assertSee($bucket->getId());
 		}
 	}

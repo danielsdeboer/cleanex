@@ -4,17 +4,19 @@ namespace Application\Todos\QA\Tests\UI;
 
 use Application\Common\QA\Cases\WebTestCase;
 use Application\Common\QA\Support\Validation\ValidationData;
+use Application\Common\UI\Routing\UrlFactory;
 use Application\Todos\Core\Interfaces\BucketRepoInterface;
 use Application\Todos\QA\Support\DataProviders\BucketStoreDataProvider;
 use Application\Todos\QA\Support\Stubs\BucketRepoStub;
-use Application\Todos\UI\Handlers\BucketCreateHandler;
+use Application\Todos\UI\Handlers\BucketStoreHandler;
+use Application\Todos\UI\RouteEnum;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(BucketCreateHandler::class)]
+#[CoversClass(BucketStoreHandler::class)]
 class BucketStoreTest extends WebTestCase
 {
 	private BucketRepoStub $repo;
@@ -29,10 +31,11 @@ class BucketStoreTest extends WebTestCase
 		);
 	}
 
+	/** @param array<string, mixed> $requestData */
 	protected function callWithData(array $requestData): TestResponse
 	{
 		return $this->callNamedRoute(
-			routeName: 'buckets::store',
+			route: RouteEnum::BucketStore,
 			requestData: $requestData,
 			requestMethod: 'POST',
 		);
@@ -52,11 +55,15 @@ class BucketStoreTest extends WebTestCase
 	{
 		$name = Str::random();
 
-	    $this->callWithData(['name' => $name])
-			->assertRedirect(route('buckets::index'));
+	    $request = $this->callWithData(['name' => $name]);
 
-		$this->assertTrue(
-			$this->repo::$entityCache->last()->getName()->equals($name)
+		$bucket = $this->repo->getCache()->last();
+
+		$request->assertRedirect(
+			$this->getUrlFactory()->make(
+				RouteEnum::BucketShow,
+				['bucketId' => $bucket->getId()]
+			),
 		);
 	}
 }

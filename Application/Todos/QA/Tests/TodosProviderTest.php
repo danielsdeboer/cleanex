@@ -14,9 +14,9 @@ class TodosProviderTest extends WebTestCase
 	public function it_provides_views_and_routes(): void
 	{
 	    $this->assertTrue(
-			$this->app->make(Factory::class)->exists('buckets::index'),
+			$this->app->make(Factory::class)->exists('todos::buckets.index'),
 		);
 
-		$this->assertTrue($this->getRoutes()->hasNamedRoute('buckets::index'));
+		$this->assertTrue($this->getRoutes()->hasNamedRoute('todos::buckets.index'));
 	}
 }

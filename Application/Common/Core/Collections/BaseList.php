@@ -10,10 +10,11 @@ use Traversable;
 
 /**
  * @template I
+ * @implements IteratorAggregate<int, I>
  */
 abstract class BaseList implements IteratorAggregate, Countable
 {
-	/** @var array  */
+	/** @var array<int, I> */
 	protected array $items = [];
 
 	/** @param I $item */

@@ -4,11 +4,10 @@ namespace Application\Todos\QA\Support\DataProviders;
 
 use Application\Common\QA\Support\Validation\ValidationData;
 use Application\Common\QA\Support\Validation\ValidationIterator;
-use Traversable;
 
 final class BucketStoreDataProvider
 {
-	public static function validationProvider(): Traversable
+	public static function validationProvider(): ValidationIterator
 	{
 		return new ValidationIterator(
 			ValidationData::required('name'),

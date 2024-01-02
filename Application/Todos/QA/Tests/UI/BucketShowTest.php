@@ -7,12 +7,13 @@ use Application\Todos\Core\Entities\Bucket;
 use Application\Todos\Core\Interfaces\BucketRepoInterface;
 use Application\Todos\QA\Support\Stubs\BucketRepoStub;
 use Application\Todos\QA\Support\Stubs\BucketStub;
-use Application\Todos\UI\Handlers\BucketIndexHandler;
+use Application\Todos\UI\Handlers\BucketShowHandler;
+use Application\Todos\UI\RouteEnum;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(BucketIndexHandler::class)]
+#[CoversClass(BucketShowHandler::class)]
 class BucketShowTest extends WebTestCase
 {
 	private BucketRepoStub $repo;
@@ -27,11 +28,11 @@ class BucketShowTest extends WebTestCase
 		);
 	}
 
-	public function callShow(Bucket $bucket): TestResponse
+	public function callRoute(Bucket $bucket): TestResponse
 	{
 		return $this->callNamedRoute(
-			routeName: 'buckets::show',
-			routeParams: ['bucket' => (string) $bucket->getId()],
+			route: RouteEnum::BucketShow,
+			routeParams: ['bucketId' => (string) $bucket->getId()],
 		);
 	}
 
@@ -40,9 +41,18 @@ class BucketShowTest extends WebTestCase
 	{
 		$bucket = $this->repo->insert(BucketStub::fake());
 
-	    $this->callShow($bucket)
+	    $this->callRoute($bucket)
 			->assertOk()
 			->assertSee($bucket->getName())
 			->assertSee($bucket->getId());
+	}
+
+	/** @test */
+	public function it_catches_bad_uuids(): void
+	{
+		$this->callNamedRoute(
+			route: RouteEnum::BucketShow,
+			routeParams: ['bucketId' => 'not-a-uuid'],
+		)->assertNotFound();
 	}
 }

@@ -3,6 +3,7 @@
 namespace Application\Todos\IO;
 
 use Application\Common\Core\Exceptions\NotFoundInRepoException;
+use Application\Common\IO\Config\TableNameEnum;
 use Application\Todos\Core\Entities\Bucket;
 use Application\Todos\Core\Entities\BucketList;
 use Application\Todos\Core\Interfaces\BucketRepoInterface;
@@ -24,7 +25,7 @@ class BucketRepo implements BucketRepoInterface
 	{
 		$todoLists = $this->query()->get()->map(
 			fn (stdClass $record) => new Bucket(
-				Uuid::fromString($record->uuid),
+				Uuid::fromString($record->id),
 				new BucketName($record->name),
 			),
 		);
@@ -38,7 +39,8 @@ class BucketRepo implements BucketRepoInterface
 	 */
 	public function findById(UuidInterface $id): Bucket
 	{
-		$record = $this->query()->where('uuid', $id)->first();
+		/** @var object{ id: string, name: string }|null $record */
+		$record = $this->query()->where('id', $id)->first();
 
 		if (!$record) {
 			throw new NotFoundInRepoException(
@@ -47,7 +49,7 @@ class BucketRepo implements BucketRepoInterface
 		}
 
 		return new Bucket(
-			Uuid::fromString($record->uuid),
+			Uuid::fromString($record->id),
 			new BucketName($record->name),
 		);
 	}
@@ -58,7 +60,7 @@ class BucketRepo implements BucketRepoInterface
 
 		// We replace the temporary UUID with a real one at this step.
 		$this->query()->insert([
-			'uuid' => $id,
+			'id' => $id,
 			'name' => $bucket->getName()->value(),
 			'created_at' => now(),
 			'updated_at' => now(),
@@ -74,7 +76,7 @@ class BucketRepo implements BucketRepoInterface
 
 	private function query(): Builder
 	{
-		return $this->db->table('todolists');
+		return $this->db->table(TableNameEnum::Buckets->value);
 	}
 
 }

@@ -6,8 +6,20 @@
 	colors="true"
 >
 	<testsuites>
-		<testsuite name="home.web">
-			<directory>Application/Home/Test/Web</directory>
+		<testsuite name="common">
+			<directory>Application/Common/QA</directory>
+		</testsuite>
+
+		<testsuite name="home">
+			<directory>Application/Home/QA</directory>
+		</testsuite>
+
+		<testsuite name="todos">
+			<directory>Application/Todos/QA</directory>
+		</testsuite>
+
+		<testsuite name="auth">
+			<directory>Application/Auth/QA</directory>
 		</testsuite>
 	</testsuites>
 
@@ -20,6 +32,10 @@
 			<directory suffix="Test.php">Application</directory>
 			<directory suffix="TestCase.php">Application</directory>
 			<directory suffix="blade.php">Application</directory>
+			<directory>Application/Common/QA</directory>
+			<directory>Application/Home/QA</directory>
+			<directory>Application/Todos/QA</directory>
+			<directory>Application/Auth/QA</directory>
 		</exclude>
 	</source>
 

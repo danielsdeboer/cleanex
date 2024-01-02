@@ -2,25 +2,26 @@
 
 namespace Application\Todos\UI\Handlers;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\View\Factory;
+use Application\Common\UI\Routing\UrlFactory;
+use Application\Common\UI\Routing\ViewFactory;
+use Application\Todos\UI\RouteEnum;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class BucketCreateHandler
 {
 	public function __construct(
-		private readonly Factory $viewFactory,
-		private readonly UrlGenerator $urlGenerator,
+		private readonly ViewFactory $viewFactory,
+		private readonly UrlFactory $urlFactory,
 	)
 	{
 	}
 
 	public function __invoke(Request $request): View
 	{
-		return $this->viewFactory->make('buckets::create')->with([
+		return $this->viewFactory->make(RouteEnum::BucketCreate)->with([
 			'name' => $request->old('name'),
-			'storeUrl' => $this->urlGenerator->route('buckets::store'),
+			'storeUrl' => $this->urlFactory->make(RouteEnum::BucketStore),
 		]);
 	}
 }

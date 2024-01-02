@@ -12,7 +12,9 @@
 		"ext-bcmath": "*",
 		"ext-gmp": "*",
 		"ext-json": "*",
+		"egulias/email-validator": "^4.0",
 		"guzzlehttp/guzzle": "^7.2",
+		"laravel/fortify": "^1.19",
 		"laravel/framework": "^10.10",
 		"laravel/tinker": "^2.8",
 		"picocss/pico": "^1.5"
@@ -22,8 +24,10 @@
 		"fakerphp/faker": "^1.9.1",
 		"mockery/mockery": "^1.4.4",
 		"nunomaduro/collision": "^7.0",
+		"phpstan/phpstan": "^1.10",
 		"phpunit/phpunit": "^10.1",
-		"spatie/laravel-ignition": "^2.0"
+		"spatie/laravel-ignition": "^2.0",
+		"symfony/dom-crawler": "^6.4"
 	},
 	"autoload": {
 		"psr-4": {
@@ -34,16 +38,9 @@
 	"scripts": {
 		"test": "phpunit --no-coverage",
 		"cover": "phpunit",
-		"test-home": "phpunit --testsuite=home.web --no-coverage",
-		"test-todos": "phpunit --testsuite=todos.web --no-coverage",
-		"test-common": "phpunit --testsuite=common --no-coverage",
-		"cover-home": "phpunit --testsuite=home.web",
-		"cover-todos": "phpunit --testsuite=todos.web",
-		"cover-common": "phpunit --testsuite=common",
 		"post-autoload-dump": [
 			"Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-			"@php artisan package:discover --ansi",
-			"@php -r \"file_exists('Framework/public/css/pico.min.css') || copy('vendor/picocss/pico/css/pico.min.css', 'Framework/public/css/pico.min.css');\""
+			"@php artisan package:discover --ansi"
 		],
 		"post-update-cmd": [
 			"@php artisan vendor:publish --tag=laravel-assets --ansi --force"

@@ -1,5 +1,6 @@
 <?php
 
+use Application\Common\IO\Config\TableNameEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,8 +9,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('todolists', function (Blueprint $table) {
-            $table->uuid()->primary();
+        Schema::create(TableNameEnum::Buckets->value, function (Blueprint $table) {
+            $table->uuid('id')->primary();
 			$table->string('name');
             $table->timestamps();
         });
@@ -17,6 +18,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('todolists');
+        Schema::dropIfExists(TableNameEnum::Buckets->value);
     }
 };

@@ -3,5 +3,5 @@
 @section('body')
 	<h1>Hello World</h1>
 
-	<a href="{{ route('buckets::index') }}">Todos</a>
+	<a href="{{ $todosUrl }}">Todos</a>
 @endsection

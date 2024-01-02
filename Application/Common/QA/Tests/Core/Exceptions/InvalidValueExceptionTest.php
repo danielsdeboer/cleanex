@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Common\QA\Core\Exceptions;
+namespace Application\Common\QA\Tests\Core\Exceptions;
 
-use Application\Common\QA\Cases\UnitTestCase;
 use Application\Common\Core\Exceptions\InvalidValueException;
+use Application\Common\QA\Cases\UnitTestCase;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
